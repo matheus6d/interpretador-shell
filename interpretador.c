@@ -9,7 +9,7 @@ int ContarVirgulas(char *li);
 void remove_espaco(char *str);
 void linha(char *linha, char **argumentos);
 
-//================================= EXECUTAR COMANDO ==============================
+//================================= EXECUTAR COMANDO ===========================
 void executarComandos(char *argv[]) {
 	
 	pid_t pid = fork(); //Criou processo filho
@@ -59,7 +59,7 @@ void executarComandos(char *argv[]) {
 		
 	}
 }
-//================================= CONTAR VIRGULA ==============================
+//================================= CONTAR VIRGULA =============================
 int ContarVirgulas(char *li)
 {
 	int virgula = 0, i = 0;
@@ -73,7 +73,7 @@ int ContarVirgulas(char *li)
 	}
 	return virgula;
 }
-//================================= APAGA ESPACO EM BRANCO ==============================
+//================================= APAGA ESPACO EM BRANCO =====================
 void remove_espaco(char *str) //apaga espaços em branco
 {
 	int i, j;
@@ -90,7 +90,7 @@ void remove_espaco(char *str) //apaga espaços em branco
 	}
 }
 
-//================================= TRATAMENTO DAS LINHAS ==============================
+//================================= TRATAMENTO DAS LINHAS ======================
 void linha(char *linha, char **argumentos)
 {
 	//separa a string e armazena na variavel argumentos
