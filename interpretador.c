@@ -51,7 +51,7 @@ void executarComandos(char *argv[]) {
 
 int main (int argc, char *argv[]) {
 	
-	
+	teste
 
 	return 0;
 }
