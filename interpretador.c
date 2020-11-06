@@ -115,7 +115,7 @@ void linha(char *linha, char **argumentos)
 
 int main (int argc, char *argv[]) {
 	
-	
+	printf("teste");
 
 	return 0;
 }
