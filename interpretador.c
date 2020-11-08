@@ -4,12 +4,12 @@
 #include <unistd.h> 
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <errno.h>
-int contar_virgulas(char *li);
-void remove_espaco(char *str);
-void linha(char *linha, char **argumentos);
+#include <fcntl.h>
+#define CARACTERES 512 // Quantidade de caracteres por linha de comando
 
-void executar_comandos(char *argv) {
+/*void executar_comandos(int argc, char *argv) {
 	
 	pid_t pid = fork(); //Criou processo 
 	
@@ -47,7 +47,7 @@ void executar_comandos(char *argv) {
 			
 	//	while (argv != NULL) {
 			
-			printf("Argv [%d]: %s\n", i, argv); //acho que ta dando erro aqui pq so tem um valor, entao nunca vai ser null
+			printf("Argv [%d]: %s\n", argc, argv); //acho que ta dando erro aqui pq so tem um valor, entao nunca vai ser null
 		//	i++;
 	//	}
 		
@@ -128,16 +128,69 @@ void linha(char *linha, char **argumentos)
 	}
 	argumentos[i] = NULL;
 }
+*/
 
-// -------------- Main -------------- //
-int main (int argc, char *argv[]) {
+// ---------------------------- Main ---------------------------- //
+int main () {
 	
 	//argc = quantidade de argumentos
 	//argv = qual é o argumento
 	
-	char *comando = (char*)malloc(512*sizeof(char));
-	printf("Digite um comando: \n");
+	int vet_pos[50];
+	int i = 0, j = 1, tamanho;
+	char **comando, argv[512], *argc;
 	
+	pid_t pid; // Criou processo Filho
+	
+	printf("Digite um comando: \n");
+	scanf("%[^\n]s", argv); // Recebe a entrada
+	argc = strtok(argv," "); // Divindo as string toda vez que aparecer um espaço
+	
+	comando = (char**)calloc(CARACTERES*sizeof(char*), 1);
+	
+	vet_pos[0]=0; // Inicializando vetor de posições
+	
+	while(argc != NULL) {
+		
+		comando[i] = (char*)calloc(strlen(argc)*sizeof(char*), 1);
+		
+		if(strcmp(argc,"|") == 0) {
+			
+			vet_pos[j] = i+1;
+			comando[i] = NULL; 
+			j++;
+			
+		} else {
+			
+			strcpy(comando[i], argc); // Faz copia do comando
+		}
+		
+		i++; 
+		tamanho++;
+		argc = strtok(NULL," "); // Proximo comando
+	}
+	
+	for(i=0; i<j; i++) {
+		
+		pid = fork();
+
+		if(pid == 0) {
+			
+			int id = vet_pos[i]; // Id do comando para identificação
+			
+			execvp(comando[id], &comando[id]);
+		
+		} else if (pid > 0) {
+			
+			waitpid(-1, NULL, 0); // Aguardando filho finalizar
+			
+		} else {
+			
+			printf("Erro no processo filho!\n");
+		}
+	}
+	
+	/*
 	//Contar virgulas. Mudar os paramentos para argc e argv
 	do{
 		
@@ -148,7 +201,7 @@ int main (int argc, char *argv[]) {
 		
 		
 	}while(1);
-
+*/
 
 	return 0;
 }
