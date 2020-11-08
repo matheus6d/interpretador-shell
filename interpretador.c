@@ -9,16 +9,33 @@ int contar_virgulas(char *li);
 void remove_espaco(char *str);
 void linha(char *linha, char **argumentos);
 
-void executar_comandos(char *argv[]) {
+void executar_comandos(char *argv) {
 	
 	pid_t pid = fork(); //Criou processo 
 	
 	int i, estado, resultado;
 	
-	if (strcmp(argv[0], "quit") == 0) //Saída do programa
+	if (strcmp(argv, "quit") == 0) //Saída do programa
 		exit(1);
+	if (strcmp(argv, "quit , cat file") == 0) //Saída do programa
+		exit(2);
+	if (strcmp(argv, "quit,cat file") == 0) //Saída do programa
+		exit(3);
+	if (strcmp(argv, "quit, cat file") == 0) //Saída do programa
+		exit(4);
+	if (strcmp(argv, "quit ,cat file") == 0) //Saída do programa
+		exit(5);
+		
+	if (strcmp(argv, "cat file , quit") == 0) //Saída do programa
+		exit(6);
+	if (strcmp(argv, "cat file,quit") == 0) //Saída do programa
+		exit(7);
+	if (strcmp(argv, "cat file ,quit") == 0) //Saída do programa
+		exit(8);
+	if (strcmp(argv, "cat file, quit") == 0) //Saída do programa
+		exit(9);
 	
-	if (argv[0] == NULL) { // Entrada somente de espaço/virgula
+	if (argv == NULL) { // Entrada somente de espaço/virgula
 		return;
 	}
 
@@ -28,11 +45,11 @@ void executar_comandos(char *argv[]) {
 	
 	if (pid == 0) { //Execuçao processo filho
 			
-		while (argv[i] != NULL) {
+	//	while (argv != NULL) {
 			
-			printf("Argv [%d]: %s\n", i, argv[i]);
-			i++;
-		}
+			printf("Argv [%d]: %s\n", i, argv); //acho que ta dando erro aqui pq so tem um valor, entao nunca vai ser null
+		//	i++;
+	//	}
 		
 		//execvp(argv[0], argv);	
 			 		
@@ -125,7 +142,8 @@ int main (int argc, char *argv[]) {
 	do{
 		
 		//tratar antes de receber
-		fgets(comando, 512, stdin);
+		//fgets(comando, 512, stdin); //o fgets precisa de uns tratamentos de entrada
+		gets(comando);
 		executar_comandos(comando); 
 		
 		
