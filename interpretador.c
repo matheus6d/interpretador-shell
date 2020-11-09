@@ -170,18 +170,65 @@ int main () {
 		argc = strtok(NULL," "); // Proximo comando
 	}
 	
+	int arq[j][2];
+	for(i=0; i<j; i++) {
+		pipe(arq[i]); // Criar pipe para arquivo
+	}
+		
 	for(i=0; i<j; i++) {
 		
 		pid = fork();
 
-		if(pid == 0) {
+		if(pid == 0) { // Processo filho
 			
+			int ARQUIVO_out, ARQUIVO_in;
 			int id = vet_pos[i]; // Id do comando para identificação
+			int apontador = id; // Aponta para comando que será lido
 			
-			execvp(comando[id], &comando[id]);
-		
-		} else if (pid > 0) {
+			while(comando[apontador] != NULL) {
+				
+				if(strcmp(comando[apontador],">") == 0) { // Saída
+					
+					ARQUIVO_out = open (comando[apontador+1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+					dup2(ARQUIVO_out, STDOUT_FILENO);
+					comando[apontador] = NULL; // Parar leitura
+				
+				} else if (strcmp(comando[apontador],">>") == 0) { 
+					
+					ARQUIVO_out = open (comando[apontador+1], O_CREAT | O_RDWR | O_APPEND, 0644);
+					dup2(ARQUIVO_out, STDOUT_FILENO);
+					comando[apontador] = NULL; // Parar leitura
+				
+				} else if (strcmp(comando[apontador],">>") == 0) {
+				 	
+				 	ARQUIVO_in = open (comando[apontador+1], O_RDONLY, 0644);
+					dup2(ARQUIVO_in, STDIN_FILENO);
+					comando[apontador] = NULL; // Parar leitura
+				}
+				 
+				 apontador++;
+				 
+				}
+				
+				if(i != 0) { // 2º caso ou mais
+					close(arq[i-1][1]); // Fecha escrita
+                	dup2(arq[i-1][0], STDIN_FILENO); 
+					close(arq[i-1][0]);
+				}
+				
+				if(i != j-1){ // Não ser o último processo
+                	close(arq[i][0]); 
+					dup2(arq[i][1], STDOUT_FILENO); 
+					close(arq[i][1]); // Fecha escrita
+           		}
+				
+				execvp(comando[id], &comando[id]);
+				close(arq[i-1][0]);
 			
+		} else if (pid > 0) { // Processo pai
+			
+			close(arq[i-1][0]);
+			close(arq[i-1][1]);
 			waitpid(-1, NULL, 0); // Aguardando filho finalizar
 			
 		} else {
@@ -189,19 +236,6 @@ int main () {
 			printf("Erro no processo filho!\n");
 		}
 	}
-	
-	/*
-	//Contar virgulas. Mudar os paramentos para argc e argv
-	do{
-		
-		//tratar antes de receber
-		//fgets(comando, 512, stdin); //o fgets precisa de uns tratamentos de entrada
-		gets(comando);
-		executar_comandos(comando); 
-		
-		
-	}while(1);
-*/
 
 	return 0;
 }
