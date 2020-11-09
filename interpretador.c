@@ -15,35 +15,17 @@
 	
 	int i, estado, resultado;
 	
-	if (strcmp(argv, "quit") == 0) //Saída do programa
-		exit(1);
-	if (strcmp(argv, "quit , cat file") == 0) //Saída do programa
-		exit(2);
-	if (strcmp(argv, "quit,cat file") == 0) //Saída do programa
-		exit(3);
-	if (strcmp(argv, "quit, cat file") == 0) //Saída do programa
-		exit(4);
-	if (strcmp(argv, "quit ,cat file") == 0) //Saída do programa
-		exit(5);
-		
-	if (strcmp(argv, "cat file , quit") == 0) //Saída do programa
-		exit(6);
-	if (strcmp(argv, "cat file,quit") == 0) //Saída do programa
-		exit(7);
-	if (strcmp(argv, "cat file ,quit") == 0) //Saída do programa
-		exit(8);
-	if (strcmp(argv, "cat file, quit") == 0) //Saída do programa
-		exit(9);
 	
-	if (argv == NULL) { // Entrada somente de espaço/virgula
+	
+	if (argv == NULL) { // Entrada somente de espa?o/virgula
 		return;
 	}
 
-	if (pid < 0) { //Erro, fork não criou o processo
+	if (pid < 0) { //Erro, fork n?o criou o processo
 		perror("Erro ao executar o Fork! Tente novamente!");
 	}
 	
-	if (pid == 0) { //Execuçao processo filho
+	if (pid == 0) { //Execu?ao processo filho
 			
 	//	while (argv != NULL) {
 			
@@ -59,7 +41,7 @@
 
 		do {
 			
-			resultado = waitpid(pid, &estado, WUNTRACED | WCONTINUED); // aguarda a execução do processo até que o filho mudeo o estado
+			resultado = waitpid(pid, &estado, WUNTRACED | WCONTINUED); // aguarda a execu??o do processo at? que o filho mudeo o estado
 
 			if (resultado < 0) {
 				
@@ -68,8 +50,8 @@
 			}
 
 		} while (!WIFEXITED(estado) && !WIFSIGNALED(estado)); 
-		//WIFEXITED: se retornou normalmente é true
-		//WIFSIGNALED: só é true se o filho foi encerrado
+		//WIFEXITED: se retornou normalmente ? true
+		//WIFSIGNALED: s? ? true se o filho foi encerrado
 		//Enquanto for diferente de verdade ele fica no loop
 	}
 }
@@ -89,7 +71,7 @@ int contar_virgulas(char *li)
 	return virgula;
 }
 
-// -------------- Remover Espaços -------------- //
+// -------------- Remover Espa?os -------------- //
 void remove_espaco(char *str) 
 {
 	int i, j;
@@ -134,7 +116,7 @@ void linha(char *linha, char **argumentos)
 int main () {
 	
 	//argc = quantidade de argumentos
-	//argv = qual é o argumento
+	//argv = qual ? o argumento
 	
 	int vet_pos[50];
 	int i = 0, j = 1, tamanho;
@@ -144,13 +126,34 @@ int main () {
 	
 	printf("Digite um comando: \n");
 	scanf("%[^\n]s", argv); // Recebe a entrada
-	argc = strtok(argv," "); // Divindo as string toda vez que aparecer um espaço
+	
+	if (strcmp(argv, "quit") == 0) //Sa?da do programa
+		exit(1);
+	if (strcmp(argv, "quit , cat file") == 0) //Sa?da do programa
+		exit(2);
+	if (strcmp(argv, "quit,cat file") == 0) //Sa?da do programa
+		exit(3);
+	if (strcmp(argv, "quit, cat file") == 0) //Sa?da do programa
+		exit(4);
+	if (strcmp(argv, "quit ,cat file") == 0) //Sa?da do programa
+		exit(5);
+		
+	if (strcmp(argv, "cat file , quit") == 0) //Sa?da do programa
+		exit(6);
+	if (strcmp(argv, "cat file,quit") == 0) //Sa?da do programa
+		exit(7);
+	if (strcmp(argv, "cat file ,quit") == 0) //Sa?da do programa
+		exit(8);
+	if (strcmp(argv, "cat file, quit") == 0) //Sa?da do programa
+		exit(9);
+	
+	argc = strtok(argv," "); // Divindo as string toda vez que aparecer um espa?o
 	
 	comando = (char**)calloc(CARACTERES*sizeof(char*), 1);
 	
-	vet_pos[0]=0; // Inicializando vetor de posições
+	vet_pos[0]=0; // Inicializando vetor de posi??es
 	
-	while(argc != NULL) {
+	do{
 		
 		comando[i] = (char*)calloc(strlen(argc)*sizeof(char*), 1);
 		
@@ -168,7 +171,7 @@ int main () {
 		i++; 
 		tamanho++;
 		argc = strtok(NULL," "); // Proximo comando
-	}
+	}while(argc != NULL);
 	
 	int arq[j][2];
 	for(i=0; i<j; i++) {
@@ -182,12 +185,12 @@ int main () {
 		if(pid == 0) { // Processo filho
 			
 			int ARQUIVO_out, ARQUIVO_in;
-			int id = vet_pos[i]; // Id do comando para identificação
-			int apontador = id; // Aponta para comando que será lido
+			int id = vet_pos[i]; // Id do comando para identifica??o
+			int apontador = id; // Aponta para comando que ser? lido
 			
 			while(comando[apontador] != NULL) {
 				
-				if(strcmp(comando[apontador],">") == 0) { // Saída
+				if(strcmp(comando[apontador],">") == 0) { // Sa?da
 					
 					ARQUIVO_out = open (comando[apontador+1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 					dup2(ARQUIVO_out, STDOUT_FILENO);
@@ -210,13 +213,13 @@ int main () {
 				 
 				}
 				
-				if(i != 0) { // 2º caso ou mais
+				if(i != 0) { // 2? caso ou mais
 					close(arq[i-1][1]); // Fecha escrita
                 	dup2(arq[i-1][0], STDIN_FILENO); 
 					close(arq[i-1][0]);
 				}
 				
-				if(i != j-1){ // Não ser o último processo
+				if(i != j-1){ // N?o ser o ?ltimo processo
                 	close(arq[i][0]); 
 					dup2(arq[i][1], STDOUT_FILENO); 
 					close(arq[i][1]); // Fecha escrita
