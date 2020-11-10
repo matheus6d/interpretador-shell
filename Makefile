@@ -1,2 +1,2 @@
 all: interpretador.c
-	gcc -g -Wall -o interpretador.c
+	gcc -g -Wall -o interpretador
