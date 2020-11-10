@@ -12,7 +12,8 @@ O presente trabalho refere-se ao desenvolvimento de um interpretador- Shell, ond
 
 ![alt text](https://raw.githubusercontent.com/matheus6d/interpretador-shell/main/tela.png?token=AMG4VYFRFVWTVADUEBGJANS7VMFN4 "Tela com o código em execução")
 
-*Tela com o código em execução*
+*Tela com o código em execução*.
+
 *obs: é necessário inserir o comando "./interpretador" antes de entrar com o comando"*
 
 
