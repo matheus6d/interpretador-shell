@@ -12,7 +12,7 @@ O presente trabalho refere-se ao desenvolvimento de um interpretador- Shell, ond
 2. Em seguida, digite "./interpretador" para iniciar o programa.
 3. Caso tenha alguma alteração no arquivo *interpretador.c*, é necessário entrar com o comando "make clean" e siga os passos anteriores novamente.
 
-![alt text](https://raw.githubusercontent.com/matheus6d/interpretador-shell/main/tela.png?token=AMG4VYFRFVWTVADUEBGJANS7VMFN4 "Tela com o código em execução")
+![alt text](https://raw.githubusercontent.com/matheus6d/interpretador-shell/main/tela.png?token=AMG4VYFRFVWTVADUEBGJANS7VMFN4" Tela com o código em execução")
 
 *Tela com o código em execução*.
 
